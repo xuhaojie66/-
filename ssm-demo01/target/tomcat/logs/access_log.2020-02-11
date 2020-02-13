@@ -1,0 +1,14 @@
+0:0:0:0:0:0:0:1 - - [11/Feb/2020:17:00:18 +0800] "GET / HTTP/1.1" 200 92 http-bio-9090-exec-1 750
+0:0:0:0:0:0:0:1 - - [11/Feb/2020:17:00:18 +0800] "GET /favicon.ico HTTP/1.1" 404 999 http-bio-9090-exec-2 8
+0:0:0:0:0:0:0:1 - - [11/Feb/2020:17:00:18 +0800] "GET / HTTP/1.1" 200 92 http-bio-9090-exec-3 2
+0:0:0:0:0:0:0:1 - - [11/Feb/2020:17:00:24 +0800] "GET /teacher/teachers HTTP/1.1" 200 4853 http-bio-9090-exec-4 697
+0:0:0:0:0:0:0:1 - - [11/Feb/2020:17:00:25 +0800] "GET /teacher/selectStuById?tid=1 HTTP/1.1" 200 1735 http-bio-9090-exec-5 194
+0:0:0:0:0:0:0:1 - - [11/Feb/2020:17:00:33 +0800] "GET /insertTeas HTTP/1.1" 200 2425 http-bio-9090-exec-6 165
+0:0:0:0:0:0:0:1 - - [11/Feb/2020:17:00:33 +0800] "GET /js/jquery-3.4.1.js HTTP/1.1" 304 - http-bio-9090-exec-7 27
+0:0:0:0:0:0:0:1 - - [11/Feb/2020:17:00:46 +0800] "GET /teacher/selectOneById?tid=1 HTTP/1.1" 200 436 http-bio-9090-exec-8 93
+0:0:0:0:0:0:0:1 - - [11/Feb/2020:17:01:27 +0800] "GET /teacher/teachers HTTP/1.1" 200 4853 http-bio-9090-exec-9 22
+0:0:0:0:0:0:0:1 - - [11/Feb/2020:17:01:30 +0800] "GET /teacher/selectStuById?tid=1 HTTP/1.1" 200 1735 http-bio-9090-exec-10 13
+0:0:0:0:0:0:0:1 - - [11/Feb/2020:17:01:37 +0800] "GET /teacher/selectOneById?tid=1 HTTP/1.1" 200 436 http-bio-9090-exec-10 7
+0:0:0:0:0:0:0:1 - - [11/Feb/2020:17:01:41 +0800] "GET /insertTeas HTTP/1.1" 200 2425 http-bio-9090-exec-10 7
+0:0:0:0:0:0:0:1 - - [11/Feb/2020:17:01:55 +0800] "GET /insertTeas HTTP/1.1" 200 2425 http-bio-9090-exec-10 4
+0:0:0:0:0:0:0:1 - - [11/Feb/2020:17:01:57 +0800] "GET /teacher/selectStuById?tid=1 HTTP/1.1" 200 1735 http-bio-9090-exec-10 11

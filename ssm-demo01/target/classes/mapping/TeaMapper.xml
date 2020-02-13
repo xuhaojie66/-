@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xhj.mapper.TeaMapper">
+
+    <resultMap id="teaStus" type="com.xhj.po.Teacher">
+        <id property="tid" column="tid"/>
+        <result property="tno" column="tno"/>
+        <result property="tname" column="tname"/>
+        <result property="tsex" column="tsex"/>
+
+        <collection property="students" ofType="com.xhj.po.Student">
+            <id property="sid" column="sid"/>
+            <result property="sno" column="sno"/>
+            <result property="sname" column="sname"/>
+            <result property="ssex" column="ssex"/>
+            <result property="sclass" column="sclass"/>
+        </collection>
+
+    </resultMap>
+
+<!--    <parameterMap id="page" type="com.xhj.vo.Page">-->
+<!--        <parameter property="pageNow" javaType="java.lang.Integer"/>-->
+<!--        <parameter property="pageSize" javaType="java.lang.Integer"/>-->
+<!--        <parameter property="rowCount" javaType="java.lang.Integer"/>-->
+<!--    </parameterMap>-->
+    <sql id="teacher_columns">
+        tid,tno,tname,tsex
+    </sql>
+<!--查找全部老师-->
+    <select id="findAll" resultType="com.xhj.po.Teacher">
+        SELECT 
+         <include refid="teacher_columns"/>
+         FROM teacher
+         LIMIT ${(page.pageNow-1)*page.pageSize},#{page.pageSize}
+    </select>
+<!--通过姓名查询老师信息-->
+    <select id="findOneByName" parameterType="string" resultMap="teaStus">
+        SELECT
+        <include refid="teacher_columns"/>
+        FROM teacher
+        WHERE tname = #{tname}
+    </select>
+<!--查询单个老师信息（用于修改）-->
+    <select id="findOneById" parameterType="int" resultType="com.xhj.po.Teacher">
+        SELECT
+        <include refid="teacher_columns"/>
+        FROM teacher
+        WHERE tid=#{id}
+    </select>
+<!--修改老师信息-->
+    <update id="updateOne" parameterType="com.xhj.po.Teacher">
+        UPDATE teacher
+        SET
+        tno=#{teacher.tno}, tname=#{teacher.tname}, tsex=#{teacher.tsex}
+        WHERE
+        tid=#{teacher.tid}
+    </update>
+<!--删除单个老师-->
+    <delete id="deleteOne" parameterType="int" >
+        DELETE FROM teacher
+        WHERE tid=#{id}
+    </delete>
+<!--批量添加老师-->
+    <insert id="insertTeas" parameterType="com.xhj.po.Teacher">
+        INNER INTO teacher
+        (tno,tname,tsex)
+        VALUES
+        <foreach collection="teachers" item="teacher" separator=",">
+            (#{teacher.tno},#{teacher.tname},#{teacher.tsex})
+        </foreach>
+    </insert>
+<!--批量删除老师-->
+    <delete id="deleteTeas">
+        DELETE FROM teacher
+        WHERE tid IN (
+        <foreach collection="tids" item="tid" separator=",">
+            #{tid}
+        </foreach>
+        )
+    </delete>
+<!--&lt;!&ndash;根据老师id，查询老师的学生&ndash;&gt;-->
+<!--    <select id="findStuById" parameterType="int" resultMap="teaStus">-->
+<!--        SELECT-->
+<!--        t.*,s.*-->
+<!--        FROM-->
+<!--        grade g,student s,teacher t-->
+<!--        WHERE s.sid=g.csid-->
+<!--		AND t.tid=g.ctid-->
+<!--        AND t.tid=#{tid}-->
+<!--        ORDER BY s.sclass-->
+<!--    </select>-->
+<!--找到当年老师的最大编号(用于生成老师的教职工号)-->
+    <select id="findMaxNo" parameterType="string" resultType="string">
+        SELECT MAX(tno) FROM teacher WHERE tno like CONCAT(CONCAT('%',#{tno}),'%')
+    </select>
+<!--查询老师所有学生的班级-->
+    <select id="findClasses" parameterType="int" resultType="string">
+        SELECT
+        DISTINCT s.sclass
+        FROM
+        grade g,student s,teacher t
+        WHERE s.sid=g.csid
+		AND t.tid=g.ctid
+        AND t.tid=#{tid}
+        ORDER BY s.sclass
+    </select>
+    <!--根据老师id，查询老师的学生-->
+<!--根据班级，查询老师的学生-->
+    <select id="findStuByClass" resultMap="teaStus">
+        SELECT
+        <if test="t.tid != null">
+        t.*,
+        </if>
+        s.*
+        FROM
+        grade g,student s,teacher t
+        WHERE s.sid=g.csid
+		AND t.tid=g.ctid
+		<if test="s.sclass != null and s.sclass != ''">
+            AND s.sclass=#{sclass}
+        </if>
+        <if test="s.sname != null and s.sname != ''">
+            AND s.sname=#{sname}
+        </if>
+        <if test="t.tid != null">
+            AND t.tid=#{tid}
+            ORDER BY s.sclass
+        </if>
+    </select>
+</mapper>

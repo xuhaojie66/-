@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xhj.mapper.GraMapper">
+<!--根据老师id，删除数据-->
+    <delete id="deleteByTid" parameterType="int">
+        DELETE FROM grade
+        WHERE ctid=#{tid}
+    </delete>
+<!--根据老师id，批量删除数据-->
+    <delete id="deleteByTids">
+        DELETE FROM grade
+        WHERE ctid in (
+        <foreach collection="tids" item="tid" separator=",">
+            #{tid}
+        </foreach>
+        )
+    </delete>
+<!--通过添加班级，批量给老师添加学生-->
+    <insert id="insertStus">
+        INSERT INTO grade
+        (ctid,csid)
+        VALUES
+        <foreach collection="sids" item="sid" separator=",">
+            (#{tid},#{sid})
+        </foreach>
+    </insert>
+<!--通过删除班级，批量给老师删除学生-->
+    <delete id="deleteStus">
+        DELETE FROM grade
+        WHERE ctid=#{tid}
+        AND csid IN(
+        <foreach collection="sids" item="sid" separator=",">
+            #{sid}
+        </foreach>
+        )
+    </delete>
+</mapper>
